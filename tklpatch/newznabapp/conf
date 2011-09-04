@@ -1,0 +1,50 @@
+#!/bin/bash -ex
+
+HOSTNAME=newznabapp
+USERNAME=nzb
+GROUPNAME=nzb
+
+# set hostname
+echo "$HOSTNAME" > /etc/hostname
+sed -i "s|127.0.1.1 \(.*\)|127.0.1.1 $HOSTNAME|" /etc/hosts
+
+# create the nzb userid (which all the nzb daemons run as)
+groupadd $GROUPNAME
+useradd -c "NZB App userid" -d /home/$USERNAME -g $GROUPNAME -m -s /bin/bash "$USERNAME"
+chown -R $USERNAME:$GROUPNAME /home/$USERNAME
+
+# add the python installation tools and sudo
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y \
+    -o DPkg::Options::=--force-confdef \
+    -o DPkg::Options::=--force-confold \
+    install python-software-properties sudo
+
+####################################################
+# INSTALL xxx
+####################################################
+
+
+####################################################
+# INSTALL xxx
+####################################################
+
+
+####################################################
+# INSTALL xxx
+####################################################
+
+
+####################################################
+# Final tasks
+####################################################
+
+
+####################################################
+# done!
+####################################################
+exit
+
+
+
+
