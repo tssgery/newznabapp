@@ -21,18 +21,61 @@ DEBIAN_FRONTEND=noninteractive apt-get -y \
     install python-software-properties sudo
 
 ####################################################
-# INSTALL xxx
+# make sure no prior versions of ffmpeg x264 exist
 ####################################################
-
-
-####################################################
-# INSTALL xxx
-####################################################
-
+DEBIAN_FRONTEND=noninteractive apt-get -y \
+    -o DPkg::Options::=--force-confdef \
+    -o DPkg::Options::=--force-confold \
+    remove ffmpeg x264 libx264-dev libvpx-dev
 
 ####################################################
-# INSTALL xxx
+# get the tools needed to build/install lame/ffmpeg
 ####################################################
+DEBIAN_FRONTEND=noninteractive apt-get -y \
+    -o DPkg::Options::=--force-confdef \
+    -o DPkg::Options::=--force-confold \
+    install \
+    build-essential checkinstall git libfaac-dev libjack-jackd2-dev \
+    libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev \
+    libva-dev libvdpau-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev texi2html \
+    yasm zlib1g-dev
+
+####################################################
+# INSTALL/BUILD x264
+####################################################
+cd
+git clone git://git.videolan.org/x264
+cd x264
+./configure --enable-static
+make
+sudo checkinstall --pkgname=x264 --pkgversion="3:$(./version.sh | \
+    awk -F'[" ]' '/POINT/{print $4"+git"$5}')" --backup=no --deldoc=yes \
+    --fstrans=no --default
+
+####################################################
+# INSTALL/BUILD libvpx
+####################################################
+cd
+git clone git://review.webmproject.org/libvpx
+cd libvpx
+./configure
+make
+sudo checkinstall --pkgname=libvpx --pkgversion="1:$(date +%Y%m%d%H%M)-git" --backup=no \
+    --deldoc=yes --fstrans=no --default
+
+####################################################
+# INSTALL/BUILD ffmpeg
+####################################################
+cd
+git clone git://git.videolan.org/ffmpeg
+cd ffmpeg
+./configure --enable-gpl --enable-libfaac --enable-libmp3lame --enable-libopencore-amrnb \
+    --enable-libopencore-amrwb --enable-libtheora --enable-libvorbis --enable-libx264 \
+    --enable-libxvid --enable-nonfree --enable-postproc --enable-version3 --enable-x11grab --enable-libvpx
+make
+sudo checkinstall --pkgname=ffmpeg --pkgversion="5:$(date +%Y%m%d%H%M)-git" --backup=no \
+  --deldoc=yes --fstrans=no --default
+hash x264 ffmpeg ffplay ffprobe
 
 
 ####################################################
