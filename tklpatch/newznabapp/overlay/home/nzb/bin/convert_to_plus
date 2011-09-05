@@ -29,7 +29,7 @@ DB_HOST=`get_value DB_HOST /home/nzb/nnplus/www/config.php`
 DB_NAME=`get_value DB_NAME /home/nzb/nnplus/www/config.php`
 
 echo "USER: ${DB_USER}"
-echo "PASS: ${DB_PASS}"
+echo "PASS: ${DB_PASSWORD}"
 echo "HOST: ${DB_HOST}"
 echo "NAME: ${DB_NAME}"
 
@@ -38,7 +38,7 @@ for f in $( find /home/nzb/nnplus/db/patch/0.2.3 -type f -name \*.sql | sort )
 do
   echo "Processing $f file..."
   # take action on each file. $f store current file name
-  # cat $f
+  mysql --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < $f
 done
 
 # move the www link
