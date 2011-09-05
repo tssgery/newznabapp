@@ -1,0 +1,30 @@
+
+newznabapp
+
+This is a project for building a Turnkey Linux patch to configure a
+Turnkey Linux installation of Ubuntu 10.04 (initially) along with the following additions:
+
+- newznab
+
+
+DONATIONS
+==================================================================
+If you want to send donations to keep this work going, please send them to
+the authors of newznab and/or Turnkey Linux.
+They are the heroes in this effort, not me.
+
+
+USAGE
+==================================================================
+This patch should be applied onto version 11.2 of the 
+Turnkey LAMP distribution found at:
+http://www.turnkeylinux.org/lamp
+
+This can be done be either installing the fileserver appliance and applying the patch
+
+OR
+
+by patching the installable ISO image of the distribution
+
+tklpatch turnkey-lamp-11.2-lucid-x86.iso tklpatch/nzbapp
+
