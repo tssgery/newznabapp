@@ -107,7 +107,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -y \
     -o DPkg::Options::=--force-confdef \
     -o DPkg::Options::=--force-confold \
     install \
-    php5-cli libgd2-xpm php-pear
+    php5-cli libgd2-xpm php-pear php5-curl php5-gd
 
 ####################################################
 # pull down newznab
@@ -115,10 +115,22 @@ DEBIAN_FRONTEND=noninteractive apt-get -y \
 cd /home/$USERNAME
 wget http://www.newznab.com/newznab-0.2.3.zip
 unzip newznab-0.2.3.zip
-cd newznab-0.2.3
+rm newznab-0.2.3.zip
+ln -s /home/$USERNAME/newznab-0.2.3 /home/$USERNAME/newznab
+cd newznab
+cp misc/update_scripts/cron_scripts/newznab_screen.sh misc/update_scripts/cron_scripts/newznab_local.sh
+sed -i "s|/usr/local/|/home/nzb/newznab/|g" misc/update_scripts/cron_scripts/newznab_local.sh
+
 
 # modify necessary config files to get newznab to run
 # php config done by file overlays
+
+# set it to start on boot
+update-rc.d newznab defaults
+
+# setup the apache2 default site to be newznab
+sed -i "s|DocumentRoot /var/www/|DocumentRoot /home/nzb/newznab/www/|g" /etc/apache2/sites-available/default
+sed -i "s|<Directory /var/www/>|<Directory /home/nzb/newznab/www/>|g"    /etc/apache2/sites-available/default
 
 # apache2
 a2enmod rewrite
@@ -128,6 +140,7 @@ a2enmod rewrite
 ####################################################
 # can we remove the items needed to build ffmpeg/x264/etc?
 
+chmod -R 777 /home/$USERNAME/newznab-0.2.3
 
 ####################################################
 # done!

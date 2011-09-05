@@ -1,0 +1,42 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          newznab
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: newznab plus update scripts.
+# Description:       This script runs the scripts that periodically
+#                    update the newznab indices.
+### END INIT INFO
+
+[ -c /dev/urandom ] || exit 0
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/init/vars.sh
+
+. /lib/lsb/init-functions
+
+
+case "$1" in
+  start)
+        /usr/bin/screen -d -m -S newznab /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh
+ 
+	;;
+  stop)
+	;;
+  status)
+	;;
+  restart|reload|force-reload)
+	echo "Error: argument '$1' not supported" >&2
+	exit 3
+	;;
+  *)
+	echo "Usage: nnplus start" >&2
+	exit 3
+	;;
+esac
+
+:
