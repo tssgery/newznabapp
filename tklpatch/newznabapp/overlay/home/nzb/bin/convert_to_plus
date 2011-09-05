@@ -33,12 +33,31 @@ echo "PASS: ${DB_PASSWORD}"
 echo "HOST: ${DB_HOST}"
 echo "NAME: ${DB_NAME}"
 
+# run the patch scripts in /home/nzb/nnplus/db/patch/0.2.1-0.2.2
+for f in $( find /home/nzb/nnplus/db/patch/0.2.1-0.2.2 -type f -name \*.sql | sort )
+do
+  echo "Processing $f file..."
+  # take action on each file. $f store current file name
+  mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < $f
+  sleep 2
+done
+
+# run the patch scripts in /home/nzb/nnplus/db/patch/0.2.2-0.2.3
+for f in $( find /home/nzb/nnplus/db/patch/0.2.2-0.2.3 -type f -name \*.sql | sort )
+do
+  echo "Processing $f file..."
+  # take action on each file. $f store current file name
+  mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < $f
+  sleep 2
+done
+
 # run the patch scripts in /home/nzb/nnplus/db/patch/0.2.3
 for f in $( find /home/nzb/nnplus/db/patch/0.2.3 -type f -name \*.sql | sort )
 do
   echo "Processing $f file..."
   # take action on each file. $f store current file name
-  # mysql --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < $f
+  mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < $f
+  sleep 2
 done
 
 # move the www link
