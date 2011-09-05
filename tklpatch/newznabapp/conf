@@ -118,6 +118,10 @@ unzip newznab-0.2.3.zip
 cd newznab-0.2.3
 
 # modify necessary config files to get newznab to run
+# php config done by file overlays
+
+# apache2
+a2enmod rewrite
 
 ####################################################
 # Final tasks
