@@ -23,9 +23,9 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 case "$1" in
   start)
         /usr/bin/screen -d -m -S newznab /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh
- 
 	;;
   stop)
+        /usr/bin/screen -X -S newznab quit
 	;;
   status)
 	;;
@@ -34,7 +34,7 @@ case "$1" in
 	exit 3
 	;;
   *)
-	echo "Usage: nnplus start" >&2
+	echo "Usage: nnplus [start|stop]" >&2
 	exit 3
 	;;
 esac
