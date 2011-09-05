@@ -131,6 +131,8 @@ sed -i "s|<Directory /var/www/>|<Directory /home/nzb/newznab/www/>|g"    /etc/ap
 # apache2
 a2enmod rewrite
 
+sed -i "s|Web:    |Newznab:|" /etc/confconsole/services.txt
+
 ####################################################
 # Final tasks
 ####################################################
