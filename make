@@ -37,8 +37,8 @@ fi
 cd build
 
 # run tklpatch
-tklpatch-bundle ../tklpatch/nzbapp
-tklpatch ../iso/$BASEISO ../tklpatch/nzbapp
+tklpatch-bundle ../tklpatch/newznabapp
+tklpatch ../iso/$BASEISO ../tklpatch/newznabapp
 mv $BASE-patched.iso $TARGET
 
 
