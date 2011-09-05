@@ -4,6 +4,14 @@
 # Script to upgrade from Newznab to Newznab Plus
 ####################################################
 
+function get_value () {
+   TTT=`grep $1 $2`
+
+   TTT=`echo "${TTT}" | cut -d\' -f4`
+
+   echo "${TTT}"
+}
+
 # make sure the update scripts are stopped
 /etc/init.d/newznab stop
 
@@ -12,7 +20,18 @@ cd /home/nzb
 svn co --username svnplus svn://svn.newznab.com/nn/branches/nnplus
 
 # copy in the config files from old installation
-cp /home/nzb/newznab/www/config.php /home/newznab/nnplus/www
+cp /home/nzb/newznab/www/config.php /home/nzb/nnplus/www
+
+# we need to get some values for the database from config.php
+DB_USER=`get_value DB_USER /home/nzb/nnplus/www/config.php`
+DB_PASSWORD=`get_value DB_PASSWORD /home/nzb/nnplus/www/config.php`
+DB_HOST=`get_value DB_HOST /home/nzb/nnplus/www/config.php`
+DB_NAME=`get_value DB_NAME /home/nzb/nnplus/www/config.php`
+
+echo "USER: ${DB_USER}"
+echo "PASS: ${DB_PASS}"
+echo "HOST: ${DB_HOST}"
+echo "NAME: ${DB_NAME}"
 
 # run the patch scripts in /home/nzb/nnplus/db/patch/0.2.3
 for f in $( find /home/nzb/nnplus/db/patch/0.2.3 -type f -name \*.sql | sort )
