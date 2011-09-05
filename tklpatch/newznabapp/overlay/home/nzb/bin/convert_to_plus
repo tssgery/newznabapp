@@ -1,0 +1,34 @@
+#!/bin/bash
+
+####################################################
+# Script to upgrade from Newznab to Newznab Plus
+####################################################
+
+# make sure the update scripts are stopped
+/etc/init.d/newznab stop
+
+# pull down the latest code from SVN
+cd /home/nzb
+svn co --username svnplus svn://svn.newznab.com/nn/branches/nnplus
+
+# copy in the config files from old installation
+cp /home/nzb/newznab/www/config.php /home/newznab/nnplus/www
+
+# run the patch scripts in /home/nzb/nnplus/db/patch/0.2.3
+for f in $( find /home/nzb/nnplus/db/patch/0.2.3 -type f -name \*.sql | sort )
+do
+  echo "Processing $f file..."
+  # take action on each file. $f store current file name
+  # cat $f
+done
+
+# move the www link
+rm /home/nzb/newznab
+ln -s /home/nzb/nnplus /home/nzb/newznab
+
+# restart apache2
+/etc/init.d/apache2 restart
+
+# restart the update scripts
+/etc/init.d/newznab start
+
