@@ -117,13 +117,9 @@ wget http://www.newznab.com/newznab-0.2.3.zip
 unzip newznab-0.2.3.zip
 rm newznab-0.2.3.zip
 ln -s /home/$USERNAME/newznab-0.2.3 /home/$USERNAME/newznab
-cd newznab
-cp misc/update_scripts/cron_scripts/newznab_screen.sh misc/update_scripts/cron_scripts/newznab_local.sh
-sed -i "s|/usr/local/www/newznab/|/home/nzb/newznab/|g" misc/update_scripts/cron_scripts/newznab_local.sh
 
+mv /home/$USERNAME/config/misc/update_scripts/cron_scripts/* /home/$USERNAME/newznab/misc/update_scripts/cron_scripts
 
-# modify necessary config files to get newznab to run
-# php config done by file overlays
 
 # set it to start on boot
 update-rc.d newznab defaults
