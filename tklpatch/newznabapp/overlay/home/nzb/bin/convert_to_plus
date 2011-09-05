@@ -38,12 +38,15 @@ for f in $( find /home/nzb/nnplus/db/patch/0.2.3 -type f -name \*.sql | sort )
 do
   echo "Processing $f file..."
   # take action on each file. $f store current file name
-  mysql --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < $f
+  # mysql --user=${DB_USER} --password=${DB_PASSWORD} ${DB_NAME} < $f
 done
 
 # move the www link
 rm /home/nzb/newznab
+chmod -R 777 nnplus
 ln -s /home/nzb/nnplus /home/nzb/newznab
+chmod -R 777 newznab
+
 
 # restart apache2
 /etc/init.d/apache2 restart

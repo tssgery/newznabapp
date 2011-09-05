@@ -65,6 +65,7 @@ sudo checkinstall --pkgname=x264 --pkgversion="3:$(./version.sh | \
 cd 
 # rm -rf x264
 rm -rf x264-snapshot*
+rm last_stable_x264.tar
 
 ####################################################
 # INSTALL/BUILD lame
@@ -79,6 +80,7 @@ sudo checkinstall --pkgname=lame-ffmpeg --pkgversion="3.98.4" --backup=no --defa
     --deldoc=yes
 cd
 rm -rf lame-3.98.4
+rm lame-3.98.4.tar.gz
 
 ####################################################
 # INSTALL/BUILD ffmpeg
@@ -99,6 +101,7 @@ hash x264 ffmpeg ffplay ffprobe
 cd
 # rm -rf ffmpeg
 rm -rf ffmpeg-0.8.2
+rm ffmpeg-0.8.2.tar.gz
 
 ####################################################
 # install newznab pre-reqs
