@@ -21,6 +21,8 @@ svn co --username svnplus svn://svn.newznab.com/nn/branches/nnplus
 
 # copy in the config files from old installation
 cp /home/nzb/newznab/www/config.php /home/nzb/nnplus/www
+mkdir /home/nzb/nnplus/misc/update_scripts/cron_scripts
+cp /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh /home/nzb/nzbplus/misc/update_scripts/cron_scripts
 
 # we need to get some values for the database from config.php
 DB_USER=`get_value DB_USER /home/nzb/nnplus/www/config.php`
@@ -53,6 +55,7 @@ rm /home/nzb/newznab
 chmod -R 777 nnplus
 ln -s /home/nzb/nnplus /home/nzb/newznab
 chmod -R 777 newznab
+
 
 
 # restart apache2
