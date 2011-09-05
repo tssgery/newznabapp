@@ -119,7 +119,7 @@ rm newznab-0.2.3.zip
 ln -s /home/$USERNAME/newznab-0.2.3 /home/$USERNAME/newznab
 cd newznab
 cp misc/update_scripts/cron_scripts/newznab_screen.sh misc/update_scripts/cron_scripts/newznab_local.sh
-sed -i "s|/usr/local/|/home/nzb/newznab/|g" misc/update_scripts/cron_scripts/newznab_local.sh
+sed -i "s|/usr/local/www/newznab/|/home/nzb/newznab/|g" misc/update_scripts/cron_scripts/newznab_local.sh
 
 
 # modify necessary config files to get newznab to run
