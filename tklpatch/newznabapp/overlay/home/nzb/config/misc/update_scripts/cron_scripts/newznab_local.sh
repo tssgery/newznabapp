@@ -6,6 +6,7 @@ set -e
 export NEWZNAB_PATH="/home/nzb/newznab/misc/update_scripts"
 export NEWZNAB_SLEEP_TIME="600" # in seconds
 export NEWZNAB_SLEEP_NO_CONFIGPHP="300"
+export NEWZNAB_LOG="/tmp/newznab_update.log"
 
 # make sure the config.php file exists
 while true; do
@@ -21,20 +22,27 @@ LASTOPTIMIZE=`date +%s`
 
 while :
 
- do
-CURRTIME=`date +%s`
-cd ${NEWZNAB_PATH}
-/usr/bin/php5 ${NEWZNAB_PATH}/update_binaries.php
-/usr/bin/php5 ${NEWZNAB_PATH}/update_releases.php
+do
+   echo "======= Starting run ========" | tee $NEWZNAB_LOG
+   date | tee -a $NEWZNAB_LOG
+   CURRTIME=`date +%s`
+   cd ${NEWZNAB_PATH}
+   /usr/bin/php5 ${NEWZNAB_PATH}/update_binaries.php | tee -a $NEWZNAB_LOG
+   /usr/bin/php5 ${NEWZNAB_PATH}/update_releases.php | tee -a $NEWZNAB_LOG
 
-DIFF=$(($CURRTIME-$LASTOPTIMIZE))
-if [ $DIFF -gt 86400 ]; then
+   DIFF=$(($CURRTIME-$LASTOPTIMIZE))
+   if [ $DIFF -gt 86400 ]; then
 	LASTOPTIMIZE=`date +%s`
-	echo "Optimizing DB..."
-	/usr/bin/php5 ${NEWZNAB_PATH}/optimise_db.php
-fi
+	echo "Optimizing DB..." | tee -a $NEWZNAB_LOG
+	/usr/bin/php5 ${NEWZNAB_PATH}/optimise_db.php | tee -a $NEWZNAB_LOG
+   fi
 
-echo "waiting ${NEWZNAB_SLEEP_TIME} seconds..."
-sleep ${NEWZNAB_SLEEP_TIME}
+   date | tee -a $NEWZNAB_LOG
+   echo "=======  Ending run  ========" | tee -a $NEWZNAB_LOG
+
+   echo "waiting ${NEWZNAB_SLEEP_TIME} seconds..."
+   sleep ${NEWZNAB_SLEEP_TIME}
 
 done
+
+
