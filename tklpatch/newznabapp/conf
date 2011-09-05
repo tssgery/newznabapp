@@ -117,9 +117,12 @@ wget http://www.newznab.com/newznab-0.2.3.zip
 unzip newznab-0.2.3.zip
 cd newznab-0.2.3
 
+# modify necessary config files to get newznab to run
+
 ####################################################
 # Final tasks
 ####################################################
+# can we remove the items needed to build ffmpeg/x264/etc?
 
 
 ####################################################
