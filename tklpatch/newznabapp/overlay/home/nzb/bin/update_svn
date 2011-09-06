@@ -1,0 +1,13 @@
+svn export --force --username username --password password svn://svn.newznab.com/nn/branches/nnplus/ /var/www/newznab.com/htdocs/
+chown -R www-data:www-data /var/www/newznab.com/htdocs/www 2>/dev/null
+chown -R www-data:www-data /var/www/newznab.com/htdocs/misc 2>/dev/null
+chown -R www-data:www-data /var/www/newznab.com/htdocs/db 2>/dev/null
+
+chmod -R 777 /var/www/newznab.com/htdocs/www 2>/dev/null
+chmod -R 777 /var/www/newznab.com/htdocs/db 2>/dev/null
+chmod -R 777 /var/www/newznab.com/htdocs/misc 2>/dev/null
+
+rm /var/www/newznab.com/htdocs/*.txt
+rm -rf /var/www/newznab.com/htdocs/www/install
+rm -rf /var/www/newznab.com/htdocs/www/lib/smarty/templates_c/*
+

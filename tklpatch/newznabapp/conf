@@ -2,15 +2,17 @@
 
 HOSTNAME=newznabapp
 USERNAME=nzb
-GROUPNAME=nzb
+GROUPNAME=www-data
 
 # set hostname
 echo "$HOSTNAME" > /etc/hostname
 sed -i "s|127.0.1.1 \(.*\)|127.0.1.1 $HOSTNAME|" /etc/hosts
 
 # create the nzb userid (which all the nzb daemons run as)
-groupadd $GROUPNAME
+# groupadd $GROUPNAME
 useradd -c "NZB App userid" -d /home/$USERNAME -g $GROUPNAME -m -s /bin/bash "$USERNAME"
+usermod -a -G tty "$USERNAME"
+usermod -a -G users "$USERNAME"
 chown -R $USERNAME:$GROUPNAME /home/$USERNAME
 
 # Enable the multiverse repo
@@ -144,9 +146,12 @@ sed -i "s|Web:    |Newznab:|" /etc/confconsole/services.txt
 ####################################################
 # Final tasks
 ####################################################
-# can we remove the items needed to build ffmpeg/x264/etc?
+# add nzb to sudoers file
+echo "# Adding nzb to sudoers list" >> /etc/sudoers
+echo "nzb    ALL=(ALL) ALL" >> /etc/sudoers
 
-chmod -R 777 /home/$USERNAME/newznab-0.2.3
+chown -R $USERNAME:$GROUPNAME /home/$USERNAME
+chmod -R 774 /home/$USERNAME/newznab-0.2.3/
 
 ####################################################
 # done!

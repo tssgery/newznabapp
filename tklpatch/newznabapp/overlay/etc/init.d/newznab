@@ -22,10 +22,10 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 case "$1" in
   start)
-        /usr/bin/screen -d -m -S newznab /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh
+        sudo -u nzb /usr/bin/screen -d -m -S newznab /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh
 	;;
   stop)
-        /usr/bin/screen -X -S newznab quit
+        sudo -u nzb /usr/bin/screen -X -S newznab quit
 	;;
   status)
 	;;

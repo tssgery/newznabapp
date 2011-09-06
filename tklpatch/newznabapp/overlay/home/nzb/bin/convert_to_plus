@@ -3,6 +3,8 @@
 HOME=/home/nzb
 OLD=$HOME/newznab-0.2.3
 NEW=$HOME/nnplus
+USERNAME=nzb
+GROUPNAME=www-data
 
 ####################################################
 # Script to upgrade from Newznab to Newznab Plus
@@ -16,12 +18,31 @@ function get_value () {
    echo "${TTT}"
 }
 
+# print some nice info...
+echo "This cript will update the newznab classic to newznab plus"
+echo "In order for this to work, you MUST have the following"
+echo " - The subversion credentials to access newznab plus"
+echo " - the password for the current user"
+echo ""
+sudo ls >> /tmp/out
+
+if [ ! -f /tmp/out ]; then
+   exit 1
+fi
+
 # make sure the update scripts are stopped
-/etc/init.d/newznab stop
+sudo /etc/init.d/newznab stop
 
 # pull down the latest code from SVN
+echo "The next password requested will be for the svn password" 
 cd $HOME
 svn co --username svnplus svn://svn.newznab.com/nn/branches/nnplus
+
+# make sure we pulled the code done, if not... exit
+if [ ! -d /$HOME/nnplus ]; then
+   echo "Unable to pull the source code down"
+   exit 1
+fi
 
 # copy in the config files from old installation
 cp $OLD/www/config.php $NEW/www
@@ -57,20 +78,19 @@ do
 done
 
 # prep the db
-mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
+ mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
 
 cd $HOME
 # move the www link
 rm /home/nzb/newznab
-chmod -R 777 nnplus
 ln -s $NEW /home/nzb/newznab
-chmod -R 777 newznab
-
-
+sudo chown -R $USERNAME:$GROUPNAME /home/$USERNAME
+sudo chmod -R 774 nnplus
+sudo chmod -R 774 newznab
 
 # restart apache2
-/etc/init.d/apache2 restart
+sudo /etc/init.d/apache2 restart
 
 # restart the update scripts
-/etc/init.d/newznab start
+sudo /etc/init.d/newznab start
 
