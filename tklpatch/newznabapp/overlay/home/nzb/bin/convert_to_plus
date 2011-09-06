@@ -1,5 +1,9 @@
 #!/bin/bash
 
+HOME=/home/nzb
+OLD=$HOME/newznab-0.2.3
+NEW=$HOME/nnplus
+
 ####################################################
 # Script to upgrade from Newznab to Newznab Plus
 ####################################################
@@ -16,19 +20,22 @@ function get_value () {
 /etc/init.d/newznab stop
 
 # pull down the latest code from SVN
-cd /home/nzb
+cd $HOME
 svn co --username svnplus svn://svn.newznab.com/nn/branches/nnplus
 
 # copy in the config files from old installation
-cp /home/nzb/newznab/www/config.php /home/nzb/nnplus/www
-mkdir /home/nzb/nnplus/misc/update_scripts/cron_scripts
-cp /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh /home/nzb/nnplus/misc/update_scripts/cron_scripts
+cp $OLD/www/config.php $NEW/www
+mkdir $NEW/misc/update_scripts/cron_scripts
+cp $OLD/misc/update_scripts/cron_scripts/newznab_local.sh $NEW/misc/update_scripts/cron_scripts
+
+# copy the cover images
+cp -R $OLD/www/covers/* $NEW/www/covers
 
 # we need to get some values for the database from config.php
-DB_USER=`get_value DB_USER /home/nzb/nnplus/www/config.php`
-DB_PASSWORD=`get_value DB_PASSWORD /home/nzb/nnplus/www/config.php`
-DB_HOST=`get_value DB_HOST /home/nzb/nnplus/www/config.php`
-DB_NAME=`get_value DB_NAME /home/nzb/nnplus/www/config.php`
+DB_USER=`get_value DB_USER $OLD/www/config.php`
+DB_PASSWORD=`get_value DB_PASSWORD $OLD/www/config.php`
+DB_HOST=`get_value DB_HOST $OLD/www/config.php`
+DB_NAME=`get_value DB_NAME $OLD/www/config.php`
 
 # echo "USER: ${DB_USER}"
 # echo "PASS: ${DB_PASSWORD}"
@@ -36,27 +43,27 @@ DB_NAME=`get_value DB_NAME /home/nzb/nnplus/www/config.php`
 # echo "NAME: ${DB_NAME}"
 
 
-cd /home/nzb/nnplus/db/patch
+cd $NEW/db/patch
 for d in "0.2.1-0.2.2" "0.2.2-0.2.3" "0.2.3"
 do
-   # run the patch scripts in /home/nzb/nnplus/db/patch/0.2.1-0.2.2
+   # run the patch scripts 
    for f in $( find $d -type f -name \*.sql | sort )
    do
       echo "Processing $f file..."
       # take action on each file. $f store current file name
       mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < $f
-      sleep 2
+      sleep 1
    done
 done
 
 # prep the db
 mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
 
-cd /home/nzb
+cd $HOME
 # move the www link
 rm /home/nzb/newznab
 chmod -R 777 nnplus
-ln -s /home/nzb/nnplus /home/nzb/newznab
+ln -s $NEW /home/nzb/newznab
 chmod -R 777 newznab
 
 
