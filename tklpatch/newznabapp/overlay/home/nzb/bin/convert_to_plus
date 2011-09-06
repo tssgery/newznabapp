@@ -35,9 +35,6 @@ DB_NAME=`get_value DB_NAME /home/nzb/nnplus/www/config.php`
 # echo "HOST: ${DB_HOST}"
 # echo "NAME: ${DB_NAME}"
 
-# prep the db
-mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
-
 
 cd /home/nzb/nnplus/db/patch
 for d in "0.2.1-0.2.2" "0.2.2-0.2.3" "0.2.3"
@@ -52,6 +49,8 @@ do
    done
 done
 
+# prep the db
+mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
 
 cd /home/nzb
 # move the www link
