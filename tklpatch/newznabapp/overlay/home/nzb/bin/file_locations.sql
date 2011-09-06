@@ -1,4 +1,7 @@
-insert into site (setting, value) values ('ffmpegpath', '/usr/local/bin/ffmpeg');
-insert into site (setting, value) values ('unrarpath', '/usr/bin/unrar');
-insert into site (setting, value) values ('lamepath', '/usr/local/bin/lame');
-insert into site (setting, value) values ('mediainfopath', '/usr/bin/mediainfo');
+UPDATE site SET value = '/usr/local/bin/ffmpeg' WHERE setting = 'ffmpegpath';
+UPDATE site SET value = '/usr/local/bin/lame' WHERE setting = 'lamepath';
+UPDATE site SET value = '/usr/bin/unrar' WHERE setting = 'unrarpath';
+UPDATE site SET value = '/tmp' WHERE setting = 'tmpunrarpath';
+UPDATE site SET value = '/usr/bin/mediainfo' WHERE setting = 'mediainfopath';
+UPDATE site SET value = '/' WHERE setting = 'style';
+
