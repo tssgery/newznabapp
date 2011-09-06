@@ -22,7 +22,7 @@ svn co --username svnplus svn://svn.newznab.com/nn/branches/nnplus
 # copy in the config files from old installation
 cp /home/nzb/newznab/www/config.php /home/nzb/nnplus/www
 mkdir /home/nzb/nnplus/misc/update_scripts/cron_scripts
-cp /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh /home/nzb/nzbplus/misc/update_scripts/cron_scripts
+cp /home/nzb/newznab/misc/update_scripts/cron_scripts/newznab_local.sh /home/nzb/nnplus/misc/update_scripts/cron_scripts
 
 # we need to get some values for the database from config.php
 DB_USER=`get_value DB_USER /home/nzb/nnplus/www/config.php`
@@ -34,6 +34,10 @@ DB_NAME=`get_value DB_NAME /home/nzb/nnplus/www/config.php`
 # echo "PASS: ${DB_PASSWORD}"
 # echo "HOST: ${DB_HOST}"
 # echo "NAME: ${DB_NAME}"
+
+# prep the db
+mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
+
 
 cd /home/nzb/nnplus/db/patch
 for d in "0.2.1-0.2.2" "0.2.2-0.2.3" "0.2.3"
