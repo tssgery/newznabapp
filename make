@@ -5,14 +5,14 @@
 # - installable iso image
 #
 
-
+APPNAME=newznabapp
 BASEAPP=lamp
-TKLVER=11.2-lucid-x86
+TKLVER=11.3-lucid-x86
 BASE=turnkey-$BASEAPP-$TKLVER
 BASEISO=$BASE.iso
 VER=`date +"%Y%m%d"`
-TARGET="turnkey-newznabapp-11.2-lucid-x86.iso"
-PTARGET="newznabapp.tar.gz"
+TARGET="turnkey-$APPNAME-$TKLVER.iso"
+PTARGET="$APPNAME.tar.gz"
 
 if [ $# -eq 1 ]; then
    TAG=$1
@@ -28,10 +28,10 @@ fi
 
 if [ $# -gt 0 ]; then
    git tag -a "${TAG}" -m "${COMMENT}"
-   # tag the code and set the variable names
-   TARGET="turnkey-newznab-11.2-lucid-x86-$TAG.iso"
-   PTARGET="newznabapp-$TAG.tar.gz"
+   # tag the code and set the variabnle names
+   TARGET="turnkey-$APPNAME-11.2-lucid-x86-$TAG.iso"
 fi
+
 
 
 if [ -d build ]; then
@@ -47,7 +47,7 @@ if [ ! -f "iso/${BASEISO}" ]; then
    fi
 
    # get the base iso image
-   wget -P iso http://downloads.sourceforge.net/project/turnkeylinux/turnkey-$BASEAPP/$TKLVER/$BASEISO
+   wget -P iso http://readynas/webserver/turnkey/turnkeylinux/iso/turnkey-$BASEAPP-$TKLVER.iso
 fi
 
 if [ ! -d build ]; then
@@ -59,9 +59,9 @@ fi
 cd build
 
 # run tklpatch
-tklpatch-bundle ../tklpatch/newznabapp
-mv newznabapp.tar.gz $PTARGET
-tklpatch ../iso/$BASEISO ../tklpatch/newznabapp
+tklpatch-bundle ../tklpatch/$APPNAME
+mv $APPNAME.tar.gz $PTARGET
+TKLPATCH_LABEL="$APPNAME" tklpatch ../iso/$BASEISO $PTARGET
 mv $BASE-patched.iso $TARGET
 
 

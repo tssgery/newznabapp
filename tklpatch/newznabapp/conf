@@ -50,9 +50,20 @@ DEBIAN_FRONTEND=noninteractive apt-get -y \
     -o DPkg::Options::=--force-confold \
     install \
     mediainfo \
-    build-essential checkinstall yasm texi2html libfaac-dev \
+    build-essential checkinstall texi2html libfaac-dev \
     libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev \
     libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev zlib1g-dev nasm bzip2
+
+
+####################################################
+# INSTALL/BUILD yasm > 1.0
+####################################################
+cd 
+wget http://www.tortall.net/projects/yasm/releases/yasm-1.1.0.tar.gz -O- | tar zxvf -
+cd yasm-1.1.0
+./configure --disable-nls --prefix=/usr
+make
+make install
 
 ####################################################
 # INSTALL/BUILD x264
