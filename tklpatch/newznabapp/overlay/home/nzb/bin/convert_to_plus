@@ -19,7 +19,7 @@ function get_value () {
 }
 
 # print some nice info...
-echo "This cript will update the newznab classic to newznab plus"
+echo "This script will update the newznab classic to newznab plus"
 echo "In order for this to work, you MUST have the following"
 echo " - The subversion credentials to access newznab plus"
 echo " - the password for the current user"
@@ -78,7 +78,7 @@ do
 done
 
 # prep the db
- mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
+mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
 
 cd $HOME
 # move the www link
