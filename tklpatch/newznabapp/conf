@@ -23,6 +23,9 @@ sed -i "s|# deb http://archive.ubuntu.com/ubuntu lucid multiverse|deb http://arc
 sed -i "s|# deb http://archive.ubuntu.com/ubuntu lucid-updates restricted|deb http://archive.ubuntu.com/ubuntu lucid-updates restricted|" /etc/apt/sources.list.d/sources.list
 sed -i "s|# deb http://archive.ubuntu.com/ubuntu lucid restricted|deb http://archive.ubuntu.com/ubuntu lucid restricted|" /etc/apt/sources.list.d/sources.list
 
+# hold the udev package due to a bug
+echo udev hold | dpkg --set-selections
+
 # add the python installation tools and sudo
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y \
