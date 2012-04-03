@@ -52,7 +52,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -y \
     -o DPkg::Options::=--force-confdef \
     -o DPkg::Options::=--force-confold \
     install \
-    mediainfo \
+    mediainfo memcached \
     build-essential checkinstall texi2html libfaac-dev \
     libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev \
     libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev zlib1g-dev nasm bzip2
