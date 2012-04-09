@@ -4,7 +4,7 @@
 set -e
 
 export NEWZNAB_PATH="/home/nzb/newznab/misc/update_scripts"
-export NEWZNAB_SLEEP_TIME="600" # in seconds
+export NEWZNAB_SLEEP_TIME="3600" # on hour, in seconds
 export NEWZNAB_SLEEP_NO_CONFIGPHP="300"
 export NEWZNAB_LOG="/tmp/newznab_update.log"
 
