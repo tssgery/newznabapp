@@ -7,7 +7,7 @@
 
 APPNAME=newznabapp
 BASEAPP=lamp
-TKLVER=11.3-lucid-x86
+TKLVER=12.0-squeeze-x86
 BASE=turnkey-$BASEAPP-$TKLVER
 BASEISO=$BASE.iso
 VER=`date +"%Y%m%d"`
@@ -29,7 +29,7 @@ fi
 if [ $# -gt 0 ]; then
    git tag -a "${TAG}" -m "${COMMENT}"
    # tag the code and set the variabnle names
-   TARGET="turnkey-$APPNAME-11.2-lucid-x86-$TAG.iso"
+   TARGET="turnkey-$APPNAME-$TKLVER-$TAG.iso"
 fi
 
 
@@ -47,7 +47,7 @@ if [ ! -f "iso/${BASEISO}" ]; then
    fi
 
    # get the base iso image
-   wget -P iso http://readynas/webserver/turnkey/turnkeylinux/iso/turnkey-$BASEAPP-$TKLVER.iso
+   wget -P iso http://readynas/webserver/turnkey-12/iso/turnkey-$BASEAPP-$TKLVER.iso
 fi
 
 if [ ! -d build ]; then
