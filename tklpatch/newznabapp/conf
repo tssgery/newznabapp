@@ -18,11 +18,8 @@ sed -i "s|127.0.1.1 \(.*\)|127.0.1.1 $HOSTNAME|" /etc/hosts
 useradd -c "NZB App userid" -d /home/$USERNAME -g $GROUPNAME -m -s /bin/bash "$USERNAME"
 chown -R $USERNAME:$GROUPNAME /home/$USERNAME
 
-# hold the udev package due to a bug
-echo udev hold | dpkg --set-selections
-
-# add the multimedia repo
-echo "deb http://www.deb-multimedia.org squeeze main non-free" >> /etc/apt/sources.list
+# hold the udev package due to a bug (no longer needed)
+# echo udev hold | dpkg --set-selections
 
 # add the python installation tools and sudo
 apt-get update
@@ -31,11 +28,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -y \
     -o DPkg::Options::=--force-confold \
     install python-software-properties sudo subversion unrar-free
 
-DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes \
-    -o DPkg::Options::=--force-confdef \
-    -o DPkg::Options::=--force-confold \
-    install x264 lame ffmpeg
-
+/opt/aceshome/bin/makemedia
 
 ####################################################
 # install newznab pre-reqs
@@ -75,7 +68,7 @@ sed -i "s|Web:    |Newznab:|" /etc/confconsole/services.txt
 ####################################################
 # add nzb to sudoers file
 echo "# Adding nzb to sudoers list" >> /etc/sudoers
-echo "nzb    ALL=(ALL) ALL" >> /etc/sudoers
+echo "$USERNAME    ALL=(ALL) ALL"   >> /etc/sudoers
 
 chown -R $USERNAME:$GROUPNAME /home/$USERNAME
 chmod -R 774 /home/$USERNAME/newznab-0.2.3/
