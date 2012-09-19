@@ -4,6 +4,11 @@ HOSTNAME=newznabapp
 USERNAME=nzb
 GROUPNAME=www-data
 
+####################################################
+# INSTALL ACESHOME UTILITIES
+####################################################
+git clone git://github.com/tssgery/aceshome.git /opt/aceshome
+
 # set hostname
 echo "$HOSTNAME" > /etc/hostname
 sed -i "s|127.0.1.1 \(.*\)|127.0.1.1 $HOSTNAME|" /etc/hosts
@@ -13,114 +18,17 @@ sed -i "s|127.0.1.1 \(.*\)|127.0.1.1 $HOSTNAME|" /etc/hosts
 useradd -c "NZB App userid" -d /home/$USERNAME -g $GROUPNAME -m -s /bin/bash "$USERNAME"
 chown -R $USERNAME:$GROUPNAME /home/$USERNAME
 
-# Enable the multiverse repo
-sed -i "s|# deb http://archive.ubuntu.com/ubuntu lucid-updates multiverse|deb http://archive.ubuntu.com/ubuntu lucid-updates multiverse|" /etc/apt/sources.list.d/sources.list
-sed -i "s|# deb http://archive.ubuntu.com/ubuntu lucid multiverse|deb http://archive.ubuntu.com/ubuntu lucid multiverse|" /etc/apt/sources.list.d/sources.list
-
-# Enable the restricted repo
-sed -i "s|# deb http://archive.ubuntu.com/ubuntu lucid-updates restricted|deb http://archive.ubuntu.com/ubuntu lucid-updates restricted|" /etc/apt/sources.list.d/sources.list
-sed -i "s|# deb http://archive.ubuntu.com/ubuntu lucid restricted|deb http://archive.ubuntu.com/ubuntu lucid restricted|" /etc/apt/sources.list.d/sources.list
-
-# hold the udev package due to a bug
-echo udev hold | dpkg --set-selections
+# hold the udev package due to a bug (no longer needed)
+# echo udev hold | dpkg --set-selections
 
 # add the python installation tools and sudo
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y \
     -o DPkg::Options::=--force-confdef \
     -o DPkg::Options::=--force-confold \
-    install python-software-properties sudo subversion unrar
+    install python-software-properties sudo subversion unrar-free
 
-# add the mediainfo repo
-add-apt-repository ppa:shiki/mediainfo
-apt-get update
-
-####################################################
-# make sure no prior versions of packages exist
-####################################################
-DEBIAN_FRONTEND=noninteractive apt-get -y \
-    -o DPkg::Options::=--force-confdef \
-    -o DPkg::Options::=--force-confold \
-    remove ffmpeg x264 libx264-dev libmp3lame-dev
-
-####################################################
-# get the tools needed to build/install lame/ffmpeg
-####################################################
-DEBIAN_FRONTEND=noninteractive apt-get -y \
-    -o DPkg::Options::=--force-confdef \
-    -o DPkg::Options::=--force-confold \
-    install \
-    mediainfo memcached \
-    build-essential checkinstall texi2html libfaac-dev \
-    libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev \
-    libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev zlib1g-dev nasm bzip2
-
-
-####################################################
-# INSTALL/BUILD yasm > 1.0
-####################################################
-cd 
-wget http://www.tortall.net/projects/yasm/releases/yasm-1.1.0.tar.gz -O- | tar zxvf -
-cd yasm-1.1.0
-./configure --disable-nls --prefix=/usr
-make
-make install
-
-####################################################
-# INSTALL/BUILD x264
-####################################################
-cd
-wget ftp://ftp.videolan.org/pub/x264/snapshots/last_stable_x264.tar.bz2
-bzip2 -d last_stable_x264.tar.bz2
-tar xvf last_stable_x264.tar
-cd x264-snapshot*
-# git clone git://git.videolan.org/x264
-# cd x264
-./configure --enable-static
-make
-sudo checkinstall --pkgname=x264 --pkgversion="3:$(./version.sh | \
-    awk -F'[" ]' '/POINT/{print $4"+git"$5}')" --backup=no --deldoc=yes \
-    --fstrans=no --default
-cd 
-# rm -rf x264
-rm -rf x264-snapshot*
-rm last_stable_x264.tar
-
-####################################################
-# INSTALL/BUILD lame
-####################################################
-cd
-wget http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
-tar xzvf lame-3.98.4.tar.gz
-cd lame-3.98.4
-./configure --enable-nasm --disable-shared
-make
-sudo checkinstall --pkgname=lame-ffmpeg --pkgversion="3.98.4" --backup=no --default \
-    --deldoc=yes
-cd
-rm -rf lame-3.98.4
-rm lame-3.98.4.tar.gz
-
-####################################################
-# INSTALL/BUILD ffmpeg
-####################################################
-cd
-wget http://ffmpeg.org/releases/ffmpeg-0.8.2.tar.gz
-tar xvfz ffmpeg-0.8.2.tar.gz
-cd ffmpeg-0.8.2
-# git clone git://git.videolan.org/ffmpeg
-# cd ffmpeg
-./configure --enable-gpl --enable-libfaac --enable-libmp3lame --enable-libopencore-amrnb \
-    --enable-libopencore-amrwb --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libmp3lame \
-    --enable-libxvid --enable-nonfree --enable-postproc --enable-version3 --enable-x11grab
-make
-sudo checkinstall --pkgname=ffmpeg --pkgversion="5:$(date +%Y%m%d%H%M)-git" --backup=no \
-  --deldoc=yes --fstrans=no --default
-hash x264 ffmpeg ffplay ffprobe
-cd
-# rm -rf ffmpeg
-rm -rf ffmpeg-0.8.2
-rm ffmpeg-0.8.2.tar.gz
+/opt/aceshome/bin/makemedia
 
 ####################################################
 # install newznab pre-reqs
@@ -160,7 +68,7 @@ sed -i "s|Web:    |Newznab:|" /etc/confconsole/services.txt
 ####################################################
 # add nzb to sudoers file
 echo "# Adding nzb to sudoers list" >> /etc/sudoers
-echo "nzb    ALL=(ALL) ALL" >> /etc/sudoers
+echo "$USERNAME    ALL=(ALL) ALL"   >> /etc/sudoers
 
 chown -R $USERNAME:$GROUPNAME /home/$USERNAME
 chmod -R 774 /home/$USERNAME/newznab-0.2.3/
