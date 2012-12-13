@@ -17,6 +17,11 @@ while true; do
     sleep ${NEWZNAB_SLEEP_NO_CONFIGPHP}
 done
 
+# set the file paths
+if [ -x /home/nzb/bin/set_file_paths ]; then
+  /home/nzb/bin/set_file_paths
+fi
+
 
 LASTOPTIMIZE=`date +%s`
 

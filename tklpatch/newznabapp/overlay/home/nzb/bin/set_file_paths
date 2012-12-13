@@ -1,0 +1,41 @@
+#!/bin/bash
+
+####################################################
+# Script to set the file paths for a few utilities
+####################################################
+
+HOME=/home/nzb/newznab
+TESTFILE=/home/nzb/bin/.file_locations_set
+
+function get_value () {
+   TTT=`grep $1 $2`
+
+   TTT=`echo "${TTT}" | cut -d\' -f4`
+
+   echo "${TTT}"
+}
+
+if [ -f "${TESTFILE}" ]; then
+  exit
+fi
+
+if [ -f "$HOME/www/config.php" ]; then
+
+   # there is an old config. newznab has been configured
+   echo "Modifying the database"
+
+   # we need to get some values for the database from config.php
+   DB_USER=`get_value DB_USER $HOME/www/config.php`
+   DB_PASSWORD=`get_value DB_PASSWORD $HOME/www/config.php`
+   DB_HOST=`get_value DB_HOST $HOME/www/config.php`
+   DB_NAME=`get_value DB_NAME $HOME/www/config.php`
+
+   # prep the db
+   mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < /home/nzb/bin/file_locations.sql
+   touch "${TESTFILE}"
+
+else
+   echo "The $HOME/www/config.php file does not exist, please setup newznab before running this script" 
+fi
+
+
