@@ -66,9 +66,12 @@ sed -i "s|Web:    |Newznab:|" /etc/confconsole/services.txt
 ####################################################
 # Final tasks
 ####################################################
+# fixup the mysqld config file
+sed -i "s|^\[mysqld\]|\[mysqld\]\ngroup_concat_max_len=8192|" /etc/mysql/my.cnf
+
 # add nzb to sudoers file
 echo "# Adding nzb to sudoers list" >> /etc/sudoers
-echo "$USERNAME    ALL=(ALL) ALL"   >> /etc/sudoers
+echo "$USERNAME    ALL=(ALL) ALL"   >> /etc/sudoers.d/nzb
 
 chown -R $USERNAME:$GROUPNAME /home/$USERNAME
 chmod -R 774 /home/$USERNAME/newznab-0.2.3/
