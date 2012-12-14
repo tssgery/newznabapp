@@ -58,7 +58,7 @@ if [ -f "$OLD/www/config.php" ]; then
    echo "Modifying the database"
 
    cd $NEW/db/patch
-   for d in "0.2.3"
+   for d in "0.2.1-0.2.2" "0.2.2-0.2.3" "0.2.3"
    do
       # run the patch scripts 
       for f in $( find $d -type f -name \*.sql | sort )
