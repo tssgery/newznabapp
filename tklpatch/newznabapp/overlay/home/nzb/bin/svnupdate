@@ -48,11 +48,10 @@ do
    for f in $( find $d -type f -name \*.sql | sort )
    do
       $HOME/bin/execute_sql $f
-      sleep 1
    done
 done
 
-sudo chown -R $USERNAME:$GROUPNAME $HOME/$NNDIR
+sudo chown -R $USERNAME:$GROUPNAME $NNDIR
 
 # restart the update scripts
 sudo /etc/init.d/newznab start

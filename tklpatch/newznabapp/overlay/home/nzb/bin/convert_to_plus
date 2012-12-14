@@ -63,7 +63,6 @@ if [ -f "$OLD/www/config.php" ]; then
       # run the patch scripts 
       for f in $( find $d -type f -name \*.sql | sort )
       do
-         echo "Processing $f file..."
          # take action on each file. $f store current file name
          $HOME/bin/execute_sql $f
       done
