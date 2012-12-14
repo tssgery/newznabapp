@@ -11,16 +11,6 @@ USERNAME=nzb
 GROUPNAME=www-data
 
 ####################################################
-# get_value
-# pulls a value from a file
-####################################################
-function get_value () {
-   TEMPVALUE=`grep $1 $2`
-   TEMPVALUE=`echo "${TEMPVALUE}" | cut -d\' -f4`
-   echo "${TEMPVALUE}"
-}
-
-####################################################
 # main logic
 ####################################################
 

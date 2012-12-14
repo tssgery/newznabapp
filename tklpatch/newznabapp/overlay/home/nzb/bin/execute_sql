@@ -16,20 +16,17 @@ if [ -f "${RANFILE}" ]; then
   exit
 fi
 
-# we need to get some values for the database from config.php
-DB_USER=`get_value DB_USER         $DIR/www/config.php`
-DB_PASSWORD=`get_value DB_PASSWORD $DIR/www/config.php`
-DB_HOST=`get_value DB_HOST         $DIR/www/config.php`
-DB_NAME=`get_value DB_NAME         $DIR/www/config.php`
+if [ -f "$DIR/www/config.php" ]; then
+   # we need to get some values for the database from config.php
+   DB_USER=`get_value DB_USER         $DIR/www/config.php`
+   DB_PASSWORD=`get_value DB_PASSWORD $DIR/www/config.php`
+   DB_HOST=`get_value DB_HOST         $DIR/www/config.php`
+   DB_NAME=`get_value DB_NAME         $DIR/www/config.php`
+   echo "Processing $1"
+   mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < $1 
+   sleep 1
+fi
 
-# echo "USER: ${DB_USER}"
-# echo "PASS: ${DB_PASSWORD}"
-# echo "HOST: ${DB_HOST}"
-# echo "NAME: ${DB_NAME}"
-# echo "FILE: $1"
-
-echo "Processing $1"
-mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < $1 > $RANFILE
-sleep 1
+touch $RANFILE
 
 
