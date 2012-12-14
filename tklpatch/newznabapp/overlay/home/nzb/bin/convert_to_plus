@@ -57,24 +57,15 @@ if [ -f "$OLD/www/config.php" ]; then
    # there is an old config. newznab has been configured
    echo "Modifying the database"
 
-   # we need to get some values for the database from config.php
-   DB_USER=`get_value DB_USER $OLD/www/config.php`
-   DB_PASSWORD=`get_value DB_PASSWORD $OLD/www/config.php`
-   DB_HOST=`get_value DB_HOST $OLD/www/config.php`
-   DB_NAME=`get_value DB_NAME $OLD/www/config.php`
-
-   exit
-
    cd $NEW/db/patch
-   for d in "0.2.1-0.2.2" "0.2.2-0.2.3" "0.2.3"
+   for d in "0.2.3"
    do
       # run the patch scripts 
       for f in $( find $d -type f -name \*.sql | sort )
       do
          echo "Processing $f file..."
          # take action on each file. $f store current file name
-         mysql --user=${DB_USER} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_NAME} < $f
-         sleep 1
+         $HOME/bin/execute_sql $f
       done
    done
 

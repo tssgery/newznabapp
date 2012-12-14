@@ -1,0 +1,59 @@
+#!/bin/bash
+
+####################################################
+# Script to update Newznab to SVN
+####################################################
+
+# some helpful definitions
+HOME=/home/nzb
+NNDIR=$HOME/newznab
+USERNAME=nzb
+GROUPNAME=www-data
+
+####################################################
+# get_value
+# pulls a value from a file
+####################################################
+function get_value () {
+   TEMPVALUE=`grep $1 $2`
+   TEMPVALUE=`echo "${TEMPVALUE}" | cut -d\' -f4`
+   echo "${TEMPVALUE}"
+}
+
+####################################################
+# main logic
+####################################################
+
+# print some nice info...
+echo "This script will update the newznab installation from subversion"
+
+echo "Please enter your 'nzb' user password"
+sudo ls >> /tmp/out
+if [ ! -f /tmp/out ]; then
+   exit 1
+fi
+
+# make sure the update scripts are stopped
+sudo /etc/init.d/newznab stop
+
+# pull down the latest code from SVN
+cd $NNDIR
+svn update
+
+# apply database updates
+cd $NNDIR/db/patch
+for d in "0.2.3"
+do
+   # run the patch scripts
+   for f in $( find $d -type f -name \*.sql | sort )
+   do
+      $HOME/bin/execute_sql $f
+      sleep 1
+   done
+done
+
+sudo chown -R $USERNAME:$GROUPNAME $HOME/$NNDIR
+
+# restart the update scripts
+sudo /etc/init.d/newznab start
+
