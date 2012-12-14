@@ -28,6 +28,10 @@ DEBIAN_FRONTEND=noninteractive apt-get -y \
     -o DPkg::Options::=--force-confold \
     install python-software-properties sudo subversion unrar-free
 
+if [ -x /opt/aceshome/bin/stampit ]; then
+   /opt/aceshome/bin/stampit
+fi
+
 /opt/aceshome/bin/makemedia
 
 ####################################################
