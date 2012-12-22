@@ -47,6 +47,8 @@ wget http://www.newznab.com/newznab-0.2.3.zip
 unzip newznab-0.2.3.zip
 rm newznab-0.2.3.zip
 ln -s /home/$USERNAME/newznab-0.2.3 /home/$USERNAME/newznab
+# make the newznab temp directory
+mkdir /home/$USERNAME/tmp
 
 mv /home/$USERNAME/config/misc/update_scripts/cron_scripts/* /home/$USERNAME/newznab/misc/update_scripts/cron_scripts
 
