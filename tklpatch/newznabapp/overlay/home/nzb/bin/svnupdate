@@ -32,8 +32,8 @@ svn update
 
 # apply database updates
 # there is now a script in nn to do this!
-cd $NNDIR
-/usr/bin/php5 misc/update_scripts/update_database_version.php
+cd $NNDIR/misc/update_scripts
+/usr/bin/php5 update_database_version.php
 
 # old logic
 # cd $NNDIR/db/patch
