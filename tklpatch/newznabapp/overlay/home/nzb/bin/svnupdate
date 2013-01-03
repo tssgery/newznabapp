@@ -31,15 +31,20 @@ cd $NNDIR
 svn update
 
 # apply database updates
-cd $NNDIR/db/patch
-for d in "0.2.3"
-do
-   # run the patch scripts
-   for f in $( find $d -type f -name \*.sql | sort )
-   do
-      $HOME/bin/execute_sql $f
-   done
-done
+# there is now a script in nn to do this!
+cd $NNDIR
+/usr/bin/php5 misc/update_scripts/update_database_version.php
+
+# old logic
+# cd $NNDIR/db/patch
+# for d in "0.2.3"
+# do
+   # # run the patch scripts
+   # for f in $( find $d -type f -name \*.sql | sort )
+   # do
+   #    $HOME/bin/execute_sql $f
+   # done
+# done
 
 sudo chown -R $USERNAME:$GROUPNAME $NNDIR
 
