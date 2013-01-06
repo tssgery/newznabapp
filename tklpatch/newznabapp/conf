@@ -26,7 +26,9 @@ apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y \
     -o DPkg::Options::=--force-confdef \
     -o DPkg::Options::=--force-confold \
-    install python-software-properties sudo subversion unrar-free
+    install python-software-properties sudo subversion 
+
+/opt/aceshome/bin/makeunrar
 
 /opt/aceshome/bin/makemedia
 
