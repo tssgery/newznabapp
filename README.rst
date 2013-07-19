@@ -1,32 +1,37 @@
-LAMP Stack - Web Stack (MySQL)
+NEWZNAB - Usenet News indexer
 ==============================
 
-LAMP stack is a popular open source web platform commonly used to run
-dynamic web sites and servers. It includes Linux, Apache, MySQL, and
-PHP/Python/Perl and is considered by many the platform of choice for
-development and deployment of high performance web applications which
-require a solid and reliable foundation.
+newznab is a usenet indexing application, that makes building a usenet community easy.
 
-LAMP stack includes all the standard features in `TurnKey Core`_, and on
-top of that:
+Based upon the turnkey linux lamp appliance...
 
-- SSL support out of the box.
-- PHP, Python and Perl support for Apache2 and MySQL.
-- XCache - PHP opcode caching acceleration.
-- `PHPMyAdmin`_ administration frontend for MySQL (listening on port
-  12322 - uses SSL).
-- Postfix MTA (bound to localhost) to allow sending of email from web
-  applications (e.g., password recovery).
-- Webmin modules for configuring Apache2, PHP, MySQL and Postfix.
+This is a project for building a Turnkey Linux patch to configure a
+Turnkey Linux 12.1 installation along with the following additions:
 
-A separate `LAPP stack`_ appliance features PostgreSQL instead of MySQL.
+- newznab (www.newznab.com)
+
+
+DONATIONS
+==================================================================
+If you want to send donations to keep this work going, please send them to
+the authors of newznab and/or Turnkey Linux.
+They are the heroes in this effort, not me.
+
+
+USAGE
+==================================================================
+This patch needs to built with the Turnkey Linux TKLdev appliance
+
+More information can be found at:
+http://http://www.turnkeylinux.org/tkldev
+
+
+
 
 Credentials *(passwords set at first boot)*
 -------------------------------------------
 
 -  Webmin, SSH, MySQL, phpMyAdmin: username **root**
+-  nzb user: username **nzb**
 
 
-.. _TurnKey Core: http://www.turnkeylinux.org/core
-.. _PHPMyAdmin: http://www.phpmyadmin.net/
-.. _LAPP stack: http://www.turnkeylinux.org/lapp
