@@ -59,7 +59,7 @@ mv /home/$USERNAME/config/misc/update_scripts/cron_scripts/* /home/$USERNAME/new
 update-rc.d newznab defaults
 
 # setup the apache2 default site to be newznab
-sed -i "s|DocumentRoot /var/www/|DocumentRoot /home/nzb/newznab/www/|g" /etc/apache2/sites-available/default
+sed -i "s|DocumentRoot /var/www|DocumentRoot /home/nzb/newznab/www|g" /etc/apache2/sites-available/default
 sed -i "s|<Directory /var/www/>|<Directory /home/nzb/newznab/www/>|g"    /etc/apache2/sites-available/default
 
 # apache2
