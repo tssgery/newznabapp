@@ -4,11 +4,6 @@ HOSTNAME=newznabapp
 USERNAME=nzb
 GROUPNAME=www-data
 
-####################################################
-# INSTALL ACESHOME UTILITIES
-####################################################
-git clone git://github.com/tssgery/aceshome.git /opt/aceshome
-
 # set hostname
 echo "$HOSTNAME" > /etc/hostname
 sed -i "s|127.0.1.1 \(.*\)|127.0.1.1 $HOSTNAME|" /etc/hosts
